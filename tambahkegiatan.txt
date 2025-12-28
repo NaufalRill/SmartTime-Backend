@@ -1,0 +1,11 @@
+CREATE TABLE `tambahkegiatan` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nama_kegiatan` VARCHAR(255) NOT NULL,
+  `kategori` ENUM('Kuliah', 'Tugas', 'Organisasi') NOT NULL,
+  `tanggal` DATE NOT NULL,
+  `waktu_mulai` TIME NOT NULL,
+  `waktu_selesai` TIME NOT NULL,
+  `catatan` TEXT DEFAULT NULL,
+  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

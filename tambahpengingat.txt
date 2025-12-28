@@ -1,0 +1,12 @@
+CREATE TABLE tambahpengingat (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_tugas VARCHAR(255) NOT NULL,
+    jam TINYINT NOT NULL,
+    menit TINYINT NOT NULL,
+    tanggal DATE NOT NULL,
+    frekuensi ENUM('Harian', 'Mingguan', 'Bulanan') NOT NULL,
+    jenis_pengingat ENUM('Pop-Up', 'Kalender', 'Pesan') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP
+);

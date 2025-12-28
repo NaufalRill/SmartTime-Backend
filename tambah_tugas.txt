@@ -1,0 +1,13 @@
+CREATE TABLE tambahtugas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    judul VARCHAR(255) NOT NULL,
+    deskripsi TEXT,
+    deadline DATE,
+    kesulitan ENUM('Mudah', 'Sedang', 'Sulit') NOT NULL,
+    prioritas ENUM('Urgent', 'Sedang', 'Rendah') NOT NULL,
+    progress INT DEFAULT 0
+);
+
+
+
+ALTER TABLE tambahtugas ADD COLUMN filter VARCHAR(100);

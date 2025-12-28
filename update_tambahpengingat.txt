@@ -1,0 +1,7 @@
+ALTER TABLE tambahpengingat
+ADD COLUMN id_user INT(11) NOT NULL AFTER id,
+ADD CONSTRAINT fk_user_pengingat
+    FOREIGN KEY (id_user) 
+    REFERENCES users(id) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;

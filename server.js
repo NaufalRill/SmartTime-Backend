@@ -80,7 +80,7 @@ app.post('/api/tambahkegiatan', (req, res) => {
 
     // Validasi wajib
     if (!id_user) {
-        return res.status(400).json({
+        return res.status(402).json({
             success: false,
             message: "ID User tidak ditemukan. Pastikan Anda sudah login"
         });

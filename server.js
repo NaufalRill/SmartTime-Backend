@@ -87,7 +87,7 @@ app.post('/api/tambahkegiatan', (req, res) => {
     }
 
     if (!nama_kegiatan || !kategori || !tanggal || !waktu_mulai || !waktu_selesai) {
-        return res.status(400).json({
+        return res.status(401).json({
             success: false,
             message: "Semua field kecuali catatan wajib diisi!"
         });

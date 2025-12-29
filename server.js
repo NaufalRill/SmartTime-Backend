@@ -100,33 +100,19 @@ app.post('/api/tambahkegiatan', (req, res) => {
     `;
 
     db.query(
-        insertSql,
-        [
-            id_user,
-            nama_kegiatan,
-            kategori,
-            tanggal,
-            waktu_mulai,
-            waktu_selesai,
-            catatan
-        ],
-        (err, result) => {
-            if (err) {
-                console.error("Error INSERT kegiatan:", err);
-                return res.status(500).json({
-                    success: false,
-                    message: "Gagal menyimpan kegiatan ke database."
-                });
-            }
-
-            console.log("Kegiatan baru masuk DB!");
-            res.json({
-                success: true,
-                message: "Kegiatan berhasil ditambahkan!",
-                insertedId: result.insertId
+    insertSql,
+    [id_user, nama_kegiatan, kategori, tanggal, waktu_mulai, waktu_selesai, catatan],
+    (err, result) => {
+        if (err) {
+            console.error("DETAIL ERROR DATABASE:", err.sqlMessage); // Lihat error asli di terminal
+            return res.status(500).json({
+                success: false,
+                message: "Database Error: " + err.sqlMessage // Kirim pesan detail sementara untuk debug
             });
         }
-    );
+        res.json({ success: true, message: "Kegiatan berhasil ditambahkan!" });
+    }
+);
 });
 
 

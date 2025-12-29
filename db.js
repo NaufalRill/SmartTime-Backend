@@ -1,20 +1,19 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,      // interchange.proxy.rlwy.net
-    port: process.env.DB_PORT,      // 16541
+// GUNAKAN createPool, bukan createConnection
+const db = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,  // 'railway'
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-db.connect((err) => {
-    if (err) {
-        console.error('Gagal terhubung ke database Railway:', err.message);
-        return;
-    }
-    console.log('Berhasil terhubung ke MySQL Railway!');
-});
+// Pool tidak menggunakan .connect(), dia akan otomatis terhubung saat ada query
+console.log('Database Pool Created (Railway)');
 
 module.exports = db;

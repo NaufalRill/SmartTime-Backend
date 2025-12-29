@@ -158,13 +158,34 @@ app.post('/api/tambahtugas', (req, res) => {
         }
     );
 });
-
-// Route CREATE PENGINGAT (Sesuai Struktur Tabel)
+// Route CREATE PENGINGAT (dengan id_user)
 app.post('/api/tambahpengingat', (req, res) => {
-    const { nama_tugas, jam, menit, tanggal, frekuensi, jenis_pengingat } = req.body;
+    const { 
+        id_user,
+        nama_tugas, 
+        jam, 
+        menit, 
+        tanggal, 
+        frekuensi, 
+        jenis_pengingat 
+    } = req.body;
 
     // Validasi wajib
-    if (!nama_tugas || jam === undefined || menit === undefined || !tanggal || !frekuensi || !jenis_pengingat) {
+    if (!id_user) {
+        return res.status(400).json({
+            success: false,
+            message: "ID User tidak ditemukan. Pastikan Anda sudah login"
+        });
+    }
+
+    if (
+        !nama_tugas || 
+        jam === undefined || 
+        menit === undefined || 
+        !tanggal || 
+        !frekuensi || 
+        !jenis_pengingat
+    ) {
         return res.status(400).json({
             success: false,
             message: "Semua field wajib diisi!"
@@ -180,13 +201,13 @@ app.post('/api/tambahpengingat', (req, res) => {
 
     const sql = `
         INSERT INTO tambahpengingat 
-        (nama_tugas, jam, menit, tanggal, frekuensi, jenis_pengingat)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (id_user, nama_tugas, jam, menit, tanggal, frekuensi, jenis_pengingat)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
         sql,
-        [nama_tugas, jam, menit, formatTanggal, frekuensi, jenis_pengingat],
+        [id_user, nama_tugas, jam, menit, formatTanggal, frekuensi, jenis_pengingat],
         (err, result) => {
             if (err) {
                 console.error("Error INSERT pengingat:", err);

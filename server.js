@@ -69,40 +69,66 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/tambahkegiatan', (req, res) => {
     const { 
+        id_user,
         nama_kegiatan, 
         kategori, 
         tanggal, 
         waktu_mulai, 
         waktu_selesai, 
-        catatan 
+        catatan = null
     } = req.body;
 
-    // Validasi (catatan boleh kosong)
-    if (!nama_kegiatan || !kategori || !tanggal || !waktu_mulai || !waktu_selesai) {
-    return res.status(400).json({
-        success: false,
-        message: "Semua field kecuali catatan wajib diisi!"
-    });
-}
+    // Validasi wajib
+    if (!id_user) {
+        return res.status(400).json({
+            success: false,
+            message: "ID User tidak ditemukan. Pastikan Anda sudah login"
+        });
+    }
 
+    if (!nama_kegiatan || !kategori || !tanggal || !waktu_mulai || !waktu_selesai) {
+        return res.status(400).json({
+            success: false,
+            message: "Semua field kecuali catatan wajib diisi!"
+        });
+    }
 
     const insertSql = `
-    INSERT INTO tambahkegiatan 
-    (nama_kegiatan, kategori, tanggal, waktu_mulai, waktu_selesai, catatan)
-    VALUES (?, ?, ?, ?, ?, ?)
-`;
+        INSERT INTO tambahkegiatan 
+        (id_user, nama_kegiatan, kategori, tanggal, waktu_mulai, waktu_selesai, catatan)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
 
-db.query(
-    insertSql,
-    [nama_kegiatan, kategori, tanggal, waktu_mulai, waktu_selesai, catatan || null],
-    (err, result) => {
-        if (err) return res.status(500).json(err);
+    db.query(
+        insertSql,
+        [
+            id_user,
+            nama_kegiatan,
+            kategori,
+            tanggal,
+            waktu_mulai,
+            waktu_selesai,
+            catatan
+        ],
+        (err, result) => {
+            if (err) {
+                console.error("Error INSERT kegiatan:", err);
+                return res.status(500).json({
+                    success: false,
+                    message: "Gagal menyimpan kegiatan ke database."
+                });
+            }
 
-        console.log("Kegiatan baru masuk DB!");
-        res.json({ success: true, message: "Kegiatan berhasil ditambahkan!" });
-    }
-);
+            console.log("Kegiatan baru masuk DB!");
+            res.json({
+                success: true,
+                message: "Kegiatan berhasil ditambahkan!",
+                insertedId: result.insertId
+            });
+        }
+    );
 });
+
 
 // Route CREATE TUGAS
 app.post('/api/tambahtugas', (req, res) => {
